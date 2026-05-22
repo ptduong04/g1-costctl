@@ -311,7 +311,7 @@ MIT — see `LICENSE`.
 
 ## Team
 
-- Pham Tien Duong (ptduong04)
+- Pham Tung Duong (ptduong04)
 
 ---
 
