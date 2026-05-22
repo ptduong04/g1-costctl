@@ -66,4 +66,55 @@ def run(args):
         args.tag   — "key=value" string (REQUIRED)
         args.days  — int, default 7
     """
-    raise NotImplementedError("TODO: implement cost — see module docstring")
+    tag_key, tag_val = parse_kv(args.tag)
+    
+    # Calculate date range
+    end_date = date.today()
+    start_date = end_date - timedelta(days=args.days)
+    
+    # Query Cost Explorer
+    ce = boto3.client("ce")
+    try:
+        response = ce.get_cost_and_usage(
+            TimePeriod={
+                "Start": start_date.strftime("%Y-%m-%d"),
+                "End": end_date.strftime("%Y-%m-%d")
+            },
+            Granularity="DAILY",
+            Metrics=["UnblendedCost"],
+            Filter={"Tags": {"Key": tag_key, "Values": [tag_val]}},
+            GroupBy=[{"Type": "DIMENSION", "Key": "SERVICE"}]
+        )
+    except Exception as e:
+        print(f"Error querying Cost Explorer: {e}")
+        print("Note: Cost data lags 8-24h. Try --days 7 or more.")
+        return
+    
+    # Aggregate costs by service
+    service_costs = defaultdict(float)
+    
+    for day_result in response.get("ResultsByTime", []):
+        for group in day_result.get("Groups", []):
+            service_name = group["Keys"][0]
+            amount = float(group["Metrics"]["UnblendedCost"]["Amount"])
+            service_costs[service_name] += amount
+    
+    # Print results
+    if not service_costs:
+        print(f"No cost data found for {tag_key}={tag_val} over last {args.days} days.")
+        print("Note: Cost data lags 8-24h, and tags must be activated in Billing.")
+        return
+    
+    print(f"Cost for {tag_key}={tag_val} over last {args.days} days ({start_date} → {end_date}):")
+    print("-" * 70)
+    
+    # Sort by cost descending
+    sorted_services = sorted(service_costs.items(), key=lambda x: x[1], reverse=True)
+    total = 0.0
+    
+    for service, cost in sorted_services:
+        print(f"  {service:50s} $ {cost:8.2f}")
+        total += cost
+    
+    print("-" * 70)
+    print(f"  {'TOTAL':50s} $ {total:8.2f}")

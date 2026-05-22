@@ -1,0 +1,9 @@
+$ python costctl.py terminate ec2 --id i-0abc123def456789a
+Terminate EC2 instance i-0abc123def456789a? [y/N] y
+Terminated EC2 i-0abc123def456789a
+
+$ python costctl.py terminate s3 --id my-bucket-with-files
+Refusing — bucket my-bucket-with-files has 42 object(s). Empty it first.
+
+$ python costctl.py terminate s3 --id empty-bucket --force
+Deleted S3 bucket empty-bucket

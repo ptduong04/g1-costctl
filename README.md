@@ -1,13 +1,25 @@
-# costctl — XBrain W6 side challenge starter
+# costctl — XBrain W6 side challenge
 
-A starter scaffold for a small AWS-resource-management CLI. **The CLI structure
-is built; you implement the command logic.** Fork this repo, fill in the
-stubs, make the tests pass, customize for your group, then submit.
+A small AWS-resource-management CLI for cost optimization.
 
 > **Side challenge is OPTIONAL and does NOT count toward W6 score or bonus cap.**
-> Recognition is separate (Slack callout / Phase 2 selection / portfolio).
-> See `outputs/W6/W6_downtime_exercises.md` in the XBrain program repo for
-> the full brief.
+
+---
+
+## Status
+
+**Tests:** 25/25 passing
+
+**Implemented:**
+- `list` — List EC2/RDS/S3/Volume with tag filtering
+- `terminate` — Delete resources with safety checks
+- `clean` — Bulk cleanup by tag (dry-run by default)
+- `cost` — Cost breakdown by service for tagged resources
+- `tag` — Add/update tags on resources
+
+**Documentation:**
+- `REFLECTIONS.md` — 5 reflections on multi-account, idle detection, blast radius, AI tools, and W7 strategy
+- `QUICK_START.md` — Usage guide
 
 ---
 

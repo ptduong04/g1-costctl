@@ -1,0 +1,11 @@
+$ python costctl.py clean --tag purpose=practice
+Found 2 EC2 instance(s) and 1 volume(s) with purpose=practice
+(dry-run — pass --apply to actually terminate)
+  Would terminate EC2: i-0ghi789jkl012345c, i-0mno345pqr678901d
+  Would delete volumes: vol-0stu901vwx234567e
+
+$ python costctl.py clean --tag purpose=practice --apply
+Found 2 EC2 instance(s) and 1 volume(s) with purpose=practice
+Terminated EC2 i-0ghi789jkl012345c
+Terminated EC2 i-0mno345pqr678901d
+Deleted volume vol-0stu901vwx234567e

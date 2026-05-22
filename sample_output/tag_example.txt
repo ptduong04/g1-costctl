@@ -1,0 +1,7 @@
+$ python costctl.py tag ec2 --id i-0abc123def456789a --set Owner=alice --set Application=HealthBot
+Applied 2 tag(s) to ec2 i-0abc123def456789a: Owner=alice, Application=HealthBot
+
+$ python costctl.py list ec2 --tag Owner=alice
+EC2 Owner=alice — 1 found:
+------------------------------------------------------------------------------
+  i-0abc123def456789a             t3.micro             running         Application=HealthBot Environment=dev Owner=alice
